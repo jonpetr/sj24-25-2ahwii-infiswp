@@ -1,3 +1,41 @@
 body {
     background-color: gray;
 }
+
+section {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    background-color: red;
+    border-radius: 20px;
+}
+
+section h2 {
+    color: #333;
+    font-size: 24px;
+    background-color: grey;
+    border-radius: 20px;
+}
+
+img {
+    height:  50%;
+    width: 50%;
+}
+
+header h1 {
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+}
+
+header h2 {
+    text-align: center;
+    background-color: antiquewhite;
+    border-radius: 3px;
+    
+}
+
+header {
+    align-items: center;
+    justify-content: center;
+}
