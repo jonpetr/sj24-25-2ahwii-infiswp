@@ -20,15 +20,16 @@ section h2 {
 img {
     height:  50%;
     width: 50%;
+    
 }
 
-header h1 {
+header, h1 {
     text-align: center;
     background-color: rgb(255, 255, 255);
     border-radius: 15px;
 }
 
-header h2 {
+header, h2 {
     text-align: center;
     background-color: antiquewhite;
     border-radius: 3px;
