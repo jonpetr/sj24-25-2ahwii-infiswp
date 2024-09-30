@@ -8,6 +8,8 @@ section {
     border: 1px solid #ccc;
     background-color: red;
     border-radius: 20px;
+    border: 10px solid black;
+    padding: 3px;
 }
 
 section h2 {
