@@ -1,3 +1,175 @@
 body {
-    background-color: cornflowerblue;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #e6e9f1;
+    padding-left: 7%;
+    padding-right: 32%;
+}
+
+.page-container {
+    background-color: #406b9f; 
+    padding-bottom: 5px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.main-header {
+    background-color: #4d7ca9;
+}
+
+.nav-bar {
+    background-color: #3d6387;
+    padding: 10px 0;
+}
+
+.nav-bar ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.nav-bar ul li {
+    margin: 0 15px;
+}
+
+.nav-bar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.logo-weather {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.logo h1 {
+    color: white;
+    font-size: 24px;
+}
+
+.logo .orf-logo {
+    color: #d22a2a;
+    font-weight: bold;
+}
+
+.location-weather {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.location-weather img {
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+}
+
+.viennale {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+main {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    background-color: #f4f4f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.news-item.large {
+    grid-column: span 2;
+}
+
+.news-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.news-item p {
+    margin: 10px 0 0 0;
+    font-size: 14px;
+}
+
+.text-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.text-section h3 {
+    color: #406b9f;
+}
+
+.text-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.text-section ul li {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.video-item {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.video-item img {
+    width: 100%;
+    height: auto;
+}
+
+.video-item p {
+    margin-top: 5px;
+    font-size: 14px;
+}
+ul {
+    text-align: center;
+    color: #4d7ca9;
+}
+
+.headline {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.item {
+    margin: 5px ;
+
 }
