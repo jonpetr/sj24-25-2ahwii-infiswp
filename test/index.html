@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiliate Program</title>
+    <style>
+        /* Allgemeines Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Layout-Stile */
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(to bottom right, #ffe6e6, #ffcccc);
+            color: #333;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #ff3366;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            color: #555;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #ff3366;
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        /* Header-Bereich */
+        .header {
+            background-color: #ff3366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .button {
+            background-color: #ff3366;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        .button:hover {
+            background-color: #cc2852;
+        }
+
+        /* Provisionstabelle */
+        .table-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Navigation</h2>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Favoriten</a></li>
+            <li><a href="#">Bestellungen</a></li>
+            <li><a href="#">Wallet</a></li>
+            <li><a href="#">Promotion</a></li>
+        </ul>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <h1>Affiliate Program</h1>
+            <p>Einladung zur Teilnahme und verdienen Sie Provisionen!</p>
+        </div>
+
+        <!-- Buttons für QR-Code und Links -->
+        <div class="buttons">
+            <button class="button">QR-Code herunterladen</button>
+            <button class="button">Link kopieren</button>
+            <button class="button">Einladungscode kopieren</button>
+        </div>
+
+        <!-- Provisionstabelle -->
+        <div class="table-container">
+            <h2>Provisionstabelle</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Promoter Level</th>
+                        <th>Provision auf Versandgebühren</th>
+                        <th>Provision auf sekundäre Einladungen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>V1</td>
+                        <td>4.5%</td>
+                        <td>2%</td>
+                    </tr>
+                    <tr>
+                        <td>V2</td>
+                        <td>5%</td>
+                        <td>2%</td>
+                    </tr>
+                    <tr>
+                        <td>V3</td>
+                        <td>5.5%</td>
+                        <td>2%</td>
+                    </tr>
+                    <tr>
+                        <td>V4</td>
+                        <td>6%</td>
+                        <td>2%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
