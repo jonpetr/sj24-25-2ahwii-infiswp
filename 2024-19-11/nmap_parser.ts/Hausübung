@@ -1,7 +1,7 @@
 import { assert } from "@std/assert";
 
 const dataPath = '../nmap-datenfiles';
-const outputFile = './output.txt'; // Datei, in die die Ergebnisse geschrieben werden
+const outputFile = './output.txt'; 
 
 function parseDate(dateStr: string): Date {
     const p = dateStr.split('_');
@@ -9,7 +9,7 @@ function parseDate(dateStr: string): Date {
 }
 
 async function main() {
-    const results: string[] = []; // Array zum Speichern von Ergebnissen
+    const results: string[] = []; 
 
     try {
         const dirEntries = await Deno.readDir(dataPath);
@@ -30,7 +30,7 @@ async function main() {
             let host = undefined;
             let mac = undefined;
 
-            const fileContent = (await Deno.readTextFile(filePath)).replace(/\r/g, ''); // Entferne \r
+            const fileContent = (await Deno.readTextFile(filePath)).replace(/\r/g, '');
             for (const line of fileContent.split('\n')) {
                 if (line.trim() === '' || line.startsWith('Starting Nmap')
                     || line.startsWith('Nmap done') || line.startsWith('Host is up')) {
@@ -44,12 +44,12 @@ async function main() {
                     mac = line.split(' ')[2].toLowerCase();
                     const result = `${date.toISOString()};${host};${mac}`;
                     console.log(result);
-                    results.push(result); // Speichere die Ergebnisse
+                    results.push(result);
                 }
             }
         }
 
-        // Schreibe alle Ergebnisse in die Datei
+
         await Deno.writeTextFile(outputFile, results.join('\n'));
         console.log(`Ergebnisse wurden in ${outputFile} gespeichert.`);
     } catch (err) {
