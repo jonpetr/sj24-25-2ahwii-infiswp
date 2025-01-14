@@ -1,0 +1,23 @@
+// 1. Überprüfen von Dateiendungen
+const dateien = ["bericht.pdf", "rechnung.docx", "präsentation.pptx", "bild.jpg"];
+const pdfDateien = dateien.filter(datei => datei.endsWith(".pdf"));
+console.log("PDF-Dateien:", pdfDateien); // ["bericht.pdf"]
+
+// 2. Prüfen von URLs oder Protokollen
+const urls = ["https://example.com", "http://unsicher.de", "https://secure-site.org"];
+urls.forEach(url => {
+  if (url.startsWith("https://")) {
+    console.log(`${url} ist eine sichere Verbindung.`);
+  } else {
+    console.log(`${url} ist unsicher.`);
+  }
+});
+// Output:
+// https://example.com ist eine sichere Verbindung.
+// http://unsicher.de ist unsicher.
+// https://secure-site.org ist eine sichere Verbindung.
+
+// 3. Filtern von Texten nach Kriterien
+const sätze = ["Hallo Welt", "Willkommen in Deno", "Hallo Freunde", "Guten Morgen"];
+const halloSätze = sätze.filter(satz => satz.startsWith("Hallo"));
+console.log("Sätze, die mit 'Hallo' beginnen:", halloSätze); // ["Hallo Welt", "Hallo Freunde"]

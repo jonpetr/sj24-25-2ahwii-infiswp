@@ -1,195 +1,236 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Affiliate Program</title>
-    <style>
-        /* Allgemeines Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produktübersicht</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: #fff;
+    }
 
-        /* Layout-Stile */
-        body {
-            display: flex;
-            min-height: 100vh;
-            background: linear-gradient(to bottom right, #ffe6e6, #ffcccc);
-            color: #333;
-        }
+    header {
+      background-color: #222;
+      padding: 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
 
-        .sidebar {
-            width: 220px;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
 
-        .sidebar h2 {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            color: #ff3366;
-        }
+    nav {
+      margin-top: 10px;
+    }
 
-        .sidebar ul {
-            list-style: none;
-        }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
 
-        .sidebar ul li {
-            margin-bottom: 10px;
-        }
+    nav ul li {
+      display: inline;
+    }
 
-        .sidebar ul li a {
-            color: #555;
-            text-decoration: none;
-            font-weight: bold;
-            display: block;
-            padding: 8px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 16px;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
 
-        .sidebar ul li a:hover {
-            background-color: #ff3366;
-            color: #fff;
-        }
+    nav ul li a:hover {
+      background-color: #555;
+    }
 
-        .main-content {
-            flex: 1;
-            padding: 40px;
-        }
+    .category {
+      padding: 40px 20px;
+    }
 
-        /* Header-Bereich */
-        .header {
-            background-color: #ff3366;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+    .category-title {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #fff;
+    }
 
-        /* Buttons */
-        .button {
-            background-color: #ff3366;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-right: 10px;
-        }
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
 
-        .button:hover {
-            background-color: #cc2852;
-        }
+    .carousel {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+    }
 
-        /* Provisionstabelle */
-        .table-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .product-card {
+      background-color: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 20px;
+      width: 200px;
+      text-align: center;
+      margin: 0 10px;
+      flex-shrink: 0;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
+    .product-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
 
-        th {
-            background-color: #f8f8f8;
-            color: #333;
-        }
+    .product-name {
+      margin: 15px 0;
+      font-size: 18px;
+      color: #fff;
+    }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
+    .product-price {
+      font-size: 20px;
+      color: #27ae60;
+      margin-bottom: 15px;
+    }
 
-            .sidebar {
-                width: 100%;
-                padding: 10px;
-            }
+    .buy-button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
 
-            .main-content {
-                padding: 20px;
-            }
-        }
-    </style>
+    .buy-button:hover {
+      background-color: #0056b3;
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 10px 15px;
+      border-radius: 50%;
+      z-index: 100;
+    }
+
+    .carousel-button.left {
+      left: 10px;
+    }
+
+    .carousel-button.right {
+      right: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #222;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Navigation</h2>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Favoriten</a></li>
-            <li><a href="#">Bestellungen</a></li>
-            <li><a href="#">Wallet</a></li>
-            <li><a href="#">Promotion</a></li>
-        </ul>
-    </div>
-    
-    <div class="main-content">
-        <div class="header">
-            <h1>Affiliate Program</h1>
-            <p>Einladung zur Teilnahme und verdienen Sie Provisionen!</p>
-        </div>
+  <header>
+    <h1>Willkommen in unserem Shop!</h1>
+    <nav>
+      <ul>
+        <li><a href="#hoodies">Hoodies</a></li>
+        <li><a href="#electronics">Elektronik</a></li>
+        <li><a href="#jackets">Jacken</a></li>
+        <li><a href="#accessories">Zubehör</a></li>
+      </ul>
+    </nav>
+  </header>
 
-        <!-- Buttons für QR-Code und Links -->
-        <div class="buttons">
-            <button class="button">QR-Code herunterladen</button>
-            <button class="button">Link kopieren</button>
-            <button class="button">Einladungscode kopieren</button>
+  <!-- Hoodies-Bereich -->
+  <div id="hoodies" class="category">
+    <h2 class="category-title">Hoodies</h2>
+    <div class="carousel-container">
+      <button class="carousel-button left" onclick="moveCarousel(-1)">&#10094;</button>
+      <div class="carousel" id="hoodieCarousel">
+        <div class="product-card">
+          <img src="hoodie1.jpg" alt="Hoodie 1">
+          <div class="product-name">Hoodie 1</div>
+          <div class="product-price">$39.99</div>
+          <button class="buy-button">Kaufen</button>
         </div>
-
-        <!-- Provisionstabelle -->
-        <div class="table-container">
-            <h2>Provisionstabelle</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Promoter Level</th>
-                        <th>Provision auf Versandgebühren</th>
-                        <th>Provision auf sekundäre Einladungen</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>V1</td>
-                        <td>4.5%</td>
-                        <td>2%</td>
-                    </tr>
-                    <tr>
-                        <td>V2</td>
-                        <td>5%</td>
-                        <td>2%</td>
-                    </tr>
-                    <tr>
-                        <td>V3</td>
-                        <td>5.5%</td>
-                        <td>2%</td>
-                    </tr>
-                    <tr>
-                        <td>V4</td>
-                        <td>6%</td>
-                        <td>2%</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="product-card">
+          <img src="hoodie2.jpg" alt="Hoodie 2">
+          <div class="product-name">Hoodie 2</div>
+          <div class="product-price">$44.99</div>
+          <button class="buy-button">Kaufen</button>
         </div>
+        <div class="product-card">
+          <img src="hoodie3.jpg" alt="Hoodie 3">
+          <div class="product-name">Hoodie 3</div>
+          <div class="product-price">$34.99</div>
+          <button class="buy-button">Kaufen</button>
+        </div>
+        <div class="product-card">
+          <img src="hoodie4.jpg" alt="Hoodie 4">
+          <div class="product-name">Hoodie 4</div>
+          <div class="product-price">$49.99</div>
+          <button class="buy-button">Kaufen</button>
+        </div>
+        <div class="product-card">
+          <img src="hoodie5.jpg" alt="Hoodie 5">
+          <div class="product-name">Hoodie 5</div>
+          <div class="product-price">$39.99</div>
+          <button class="buy-button">Kaufen</button>
+        </div>
+      </div>
+      <button class="carousel-button right" onclick="moveCarousel(1)">&#10095;</button>
     </div>
-</body>
-</html>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Unser Shop. Alle Rechte vorbehalten.</p>
+  </footer>
+
+  <script>
+    let currentIndex = 0;
+
+    function moveCarousel(direction) {
+      const carousel = document.getElementById('hoodieCarousel');
+      const items = document.querySelectorAll('.product-card');
+      const itemWidth = items[0].offsetWidth + 20; // Including margin
+
+      currentIndex += direction;
+
+      // Prevent overflow
+      if (currentIndex < 0) {
+        currentIndex = 0;
+      } else if (currentIndex > items.length - 1) {
+        currentIn
+
