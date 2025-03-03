@@ -1,0 +1,4 @@
+SELECT euni.unique_id, e.name 
+FROM Employe 
+LEFT JOIN EmployeeUNI
+ON e.id = euni.id;
