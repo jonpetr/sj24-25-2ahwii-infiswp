@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einfache Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jonathan Petraru</h1>
+    <p>Klicke auf den Button, um eine Nachricht anzuzeigen:</p>
+    <button onclick="zeigeNachricht()">Klick hier</button>
+    <p id="nachricht"></p>
+    <script>
+        function zeigeNachricht() {
+            document.getElementById("nachricht").innerText = "Hallo, das ist meine Website!";
+        }
+    </script>
+</body>
+</html>
