@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabellen zu Website Konverter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: #007bff;
+        }
+        #file-input {
+            display: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .preview {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+        .template-selection {
+            margin-bottom: 20px;
+        }
+        .template-option {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .template-option.selected {
+            border-color: #007bff;
+            background-color: #e6f2ff;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            width: calc(33.333% - 14px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .export-options {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 768px) {
+            .card {
+                width: calc(50% - 10px);
+            }
+        }
+        @media (max-width: 480px) {
+            .card {
+                width: 100%;
+            }
+        }
+        .list-item {
+            display: flex;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .list-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .list-item-content {
+            padding: 15px;
+            flex-grow: 1;
+        }
+        .list-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        table th {
+            background-color: #f5f5f5;
+        }
+        table img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tabellen zu Website Konverter</h1>
+        
+        <div class="upload-area" id="upload-area">
+            <p>Google Tabelle oder Excel Datei hier ablegen oder klicken zum Auswählen</p>
+            <input type="file" id="file-input" accept=".xlsx,.xls,.csv,.gsheet">
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Datei wird verarbeitet...</p>
+        </div>
+        
+        <div class="template-selection" id="template-selection" style="display:none;">
+            <h2>Template auswählen:</h2>
+            <div class="template-option selected" data-template="cards">
+                <h3>Karten Layout</h3>
+                <p>Zeigt Daten als Karten mit Bildern und Text an</p>
+            </div>
+            <div class="template-option" data-template="list">
+                <h3>Listen Layout</h3>
+                <p>Zeigt Daten als einfache Liste mit Bildern an</p>
+            </div>
+            <div class="template-option" data-template="grid">
+                <h3>Tabellen Layout</h3>
+                <p>Zeigt Daten in einem Tabellenformat an</p>
+            </div>
+        </div>
+        
+        <div class="column-mapping" id="column-mapping" style="display:none;">
+            <h2>Spalten zuordnen:</h2>
+            <div>
+                <label for="name-column">Name/Titel Spalte:</label>
+                <select id="name-column"></select>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="image-column">Bild Spalte:</label>
+                <select id="image-column"></select>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="description-column">Beschreibung Spalte (optional):</label>
+                <select id="description-column"></select>
+            </div>
+            <button id="generate-preview" style="margin-top: 20px;">Vorschau generieren</button>
+        </div>
+        
+        <div class="preview" id="preview">
+            <h2>Vorschau:</h2>
+            <div id="preview-content"></div>
+            
+            <div class="export-options">
+                <h3>Website exportieren:</h3>
+                <button id="download-html">HTML herunterladen</button>
+                <button id="copy-code" style="margin-left: 10px;">HTML Code kopieren</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const loading = document.getElementById('loading');
+            const templateSelection = document.getElementById('template-selection');
+            const columnMapping = document.getElementById('column-mapping');
+            const preview = document.getElementById('preview');
+            const previewContent = document.getElementById('preview-content');
+            const nameColumn = document.getElementById('name-column');
+            const imageColumn = document.getElementById('image-column');
+            const descriptionColumn = document.getElementById('description-column');
+            const generatePreviewBtn = document.getElementById('generate-preview');
+            const downloadHtmlBtn = document.getElementById('download-html');
+            const copyCodeBtn = document.getElementById('copy-code');
+            
+            let sheetData = null;
+            let columns = [];
+            let selectedTemplate = 'cards';
+            
+            // Event für Drag & Drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#007bff';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '#ccc';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#ccc';
+                
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // Event für Klick auf Upload-Bereich
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Event für Datei-Auswahl
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+            
+            // Template-Auswahl Events
+            document.querySelectorAll('.template-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.template-option').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    option.classList.add('selected');
+                    selectedTemplate = option.dataset.template;
+                });
+            });
+            
+            // Vorschau generieren
+            generatePreviewBtn.addEventListener('click', () => {
+                const nameColumnValue = nameColumn.value;
+                const imageColumnValue = imageColumn.value;
+                const descriptionColumnValue = descriptionColumn.value;
+                
+                if (!nameColumnValue || !imageColumnValue) {
+                    alert('Bitte wählen Sie mindestens Namen und Bild-Spalten aus.');
+                    return;
+                }
+                
+                generatePreview(nameColumnValue, imageColumnValue, descriptionColumnValue);
+            });
+            
+            // HTML herunterladen
+            downloadHtmlBtn.addEventListener('click', () => {
+                const html = generateFullHtml();
+                const blob = new Blob([html], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'meine-website.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // HTML Code kopieren
+            copyCodeBtn.addEventListener('click', () => {
+                const html = generateFullHtml();
+                navigator.clipboard.writeText(html).then(() => {
+                    alert('HTML Code wurde in die Zwischenablage kopiert!');
+                }).catch(err => {
+                    console.error('Fehler beim Kopieren:', err);
+                    alert('Fehler beim Kopieren des Codes.');
+                });
+            });
+            
+            // Datei verarbeiten
+            // Datei verarbeiten
+function handleFile(file) {
+    loading.style.display = 'block';
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        try {
+            // Überprüfen, ob wir ArrayBuffer oder String haben
+            let workbook;
+            if (e.target.result instanceof ArrayBuffer) {
+                const data = new Uint8Array(e.target.result);
+                workbook = XLSX.read(data, { type: 'array' });
+            } else {
+                // String-basiertes Lesen für CSV-Dateien
+                workbook = XLSX.read(e.target.result, { type: 'string' });
+            }
+            
+            // Erste Arbeitsmappe verwenden
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            
+            // Daten in JSON konvertieren
+            sheetData = XLSX.utils.sheet_to_json(worksheet);
+            
+            if (sheetData.length === 0) {
+                alert('Die Tabelle enthält keine Daten.');
+                loading.style.display = 'none';
+                return;
+            }
+            
+            // Spalten ermitteln
+            columns = Object.keys(sheetData[0]);
+            
+            // Dropdown-Optionen füllen
+            populateDropdowns();
+            
+            // UI aktualisieren
+            templateSelection.style.display = 'block';
+            columnMapping.style.display = 'block';
+            loading.style.display = 'none';
+        } catch (error) {
+            console.error('Fehler beim Verarbeiten der Datei:', error);
+            alert('Fehler beim Verarbeiten der Datei. Bitte stellen Sie sicher, dass es sich um eine gültige Excel- oder CSV-Datei handelt.');
+            loading.style.display = 'none';
+        }
+    };
+    
+    reader.onerror = function() {
+        alert('Fehler beim Lesen der Datei.');
+        loading.style.display = 'none';
+    };
+    
+    // Basierend auf Dateityp entscheiden, wie wir sie lesen
+    const fileName = file.name.toLowerCase();
+    if (fileName.endsWith('.csv')) {
+        reader.readAsText(file);  // Text für CSV-Dateien
+    } else {
+        reader.readAsArrayBuffer(file);  // ArrayBuffer für Excel
+    }
+}
+                        
+                       
+            
+            // Dropdown-Optionen füllen
+            function populateDropdowns() {
+                // Optionen leeren
+                nameColumn.innerHTML = '';
+                imageColumn.innerHTML = '';
+                descriptionColumn.innerHTML = '';
+                
+                // Leere Option für optionale Felder
+                const emptyOption = document.createElement('option');
+                emptyOption.value = '';
+                emptyOption.textContent = '-- Keine Auswahl --';
+                descriptionColumn.appendChild(emptyOption.cloneNode(true));
+                
+                // Spaltenoptionen hinzufügen
+                columns.forEach(column => {
+                    const option = document.createElement('option');
+                    option.value = column;
+                    option.textContent = column;
+                    
+                    nameColumn.appendChild(option.cloneNode(true));
+                    imageColumn.appendChild(option.cloneNode(true));
+                    descriptionColumn.appendChild(option.cloneNode(true));
+                });
+                
+                // Versuchen, automatisch zu erkennen
+                columns.forEach(column => {
+                    const lowerColumn = column.toLowerCase();
+                    if (lowerColumn.includes('name') || lowerColumn.includes('titel')) {
+                        nameColumn.value = column;
+                    } else if (lowerColumn.includes('bild') || lowerColumn.includes('image') || lowerColumn.includes('foto')) {
+                        imageColumn.value = column;
+                    } else if (lowerColumn.includes('beschreibung') || lowerColumn.includes('description') || lowerColumn.includes('text')) {
+                        descriptionColumn.value = column;
+                    }
+                });
+            }
+            
+            // Vorschau generieren
+            function generatePreview(nameCol, imageCol, descCol) {
+                if (!sheetData || sheetData.length === 0) return;
+                
+                let html = '';
+                
+                switch (selectedTemplate) {
+                    case 'cards':
+                        html = generate } html += `
+                            <div class="card">
+                                <img src="${item[imageCol]}" alt="${item[nameCol]}">
+                                <div class="card-content">
+                                    <h3>${item[nameCol]}</h3>
+                                    ${descCol ? `<p>${item[descCol]}</p>` : ''}
+                                </div>
+                            </div>
+                        `;
