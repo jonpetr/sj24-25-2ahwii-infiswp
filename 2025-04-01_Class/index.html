@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        .quiz-box {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .frage {
+            font-weight: bold;
+        }
+        .optionen button {
+            display: block;
+            margin: 0.3rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Frage-Quiz</h1>
+    <div id="quiz-container"></div>
+
+    <script type="module">
+        class Frage {
+            constructor(frage, optionen, antwort) {
+                this.frage = frage;
+                this.optionen = optionen;
+                this.antwort = antwort;
+            }
+
+            istRichtig(antwort) {
+                return this.antwort === antwort;
+            }
+        }
+
+        async function ladeFragen() {
+            const res = await fetch("fragen.json");
+            const daten = await res.json();
+            return daten.map(e => new Frage(e.frage, e.optionen, e.antwort));
+        }
+
+        function zeigeFragen(fragen) {
+            const container = document.getElementById("quiz-container");
+            fragen.forEach((frageObj, index) => {
+                const box = document.createElement("div");
+                box.className = "quiz-box";
+
+                const frageText = document.createElement("div");
+                frageText.className = "frage";
+                frageText.textContent = `${index + 1}. ${frageObj.frage}`;
+
+                const optionen = document.createElement("div");
+                optionen.className = "optionen";
+
+                frageObj.optionen.forEach(opt => {
+                    const btn = document.createElement("button");
+                    btn.textContent = opt;
+                    btn.onclick = () => {
+                        if (frageObj.istRichtig(opt)) {
+                            btn.style.backgroundColor = "lightgreen";
+                        } else {
+                            btn.style.backgroundColor = "salmon";
+                        }
+                    };
+                    optionen.appendChild(btn);
+                });
+
+                box.appendChild(frageText);
+                box.appendChild(optionen);
+                container.appendChild(box);
+            });
+        }
+
+        ladeFragen().then(zeigeFragen);
+    </script>
+</body>
+</html>
