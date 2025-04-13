@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sheet2Site - Create websites from Google Sheets</title>
+    <title>Sheet2Site - Pricing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -15,10 +15,6 @@
         body {
             font-family: 'Inter', sans-serif;
             color: #333;
-        }
-        
-        .hero-section {
-            background-color: #f9f9f9;
         }
         
         .btn-primary {
@@ -59,38 +55,6 @@
             left: 100%;
         }
         
-        .btn-secondary {
-            background-color: white;
-            color: #666;
-            border: 1px solid #e5e7eb;
-            border-radius: 9999px;
-            padding: 0.625rem 1.5rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #f9fafb;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-secondary:active {
-            transform: translateY(0);
-        }
-        
-        .partner-logo {
-            filter: grayscale(100%);
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
-        
-        .partner-logo:hover {
-            filter: grayscale(0%);
-            opacity: 1;
-            transform: scale(1.05);
-        }
-        
         .pricing-toggle {
             background-color: #f3f4f6;
             border-radius: 9999px;
@@ -98,30 +62,54 @@
             display: inline-flex;
             margin-bottom: 2rem;
             transition: all 0.3s ease;
+            position: relative;
         }
-        
+
         .pricing-toggle button {
             padding: 0.5rem 1.5rem;
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 500;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            min-width: 100px;
         }
-        
+
         .pricing-toggle button.active {
-            background-color: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color: white;
         }
-        
-        .pricing-toggle button:hover:not(.active) {
-            background-color: rgba(255, 255, 255, 0.3);
+
+        .pricing-toggle::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: calc(100% - 8px);
+            width: calc(50% - 4px);
+            background-color: #10b981;
+            border-radius: 9999px;
+            transition: transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .pricing-toggle.monthly::before {
+            transform: translateX(0);
+        }
+
+        .pricing-toggle.yearly::before {
+            transform: translateX(100%);
+        }
+
+        .monthly-btn.active, .yearly-btn.active {
+            background-color: transparent;
         }
         
         .pricing-card {
             border: 1px solid #e5e7eb;
             border-radius: 0.5rem;
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: all 0.5s ease;
             position: relative;
             top: 0;
         }
@@ -194,23 +182,6 @@
             transform: translateY(0);
         }
         
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(50px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        
-        .slide-in-left.appear, .slide-in-right.appear {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
         .scale-in {
             opacity: 0;
             transform: scale(0.9);
@@ -237,25 +208,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-        
-        /* Parallax effect */
-        .parallax {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .parallax-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background-position: center;
-            background-size: cover;
-            z-index: -1;
-            transform: translateY(0);
-            transition: transform 0.1s ease-out;
         }
         
         /* Hover effects for navigation */
@@ -294,32 +246,70 @@
         .pulse {
             animation: pulse 2s infinite;
         }
+        
+        /* Pricing toggle and transition styles */
+        .monthly-btn.active {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .yearly-btn.active {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .price-amount, .price-period, .billing-info {
+            transition: all 0.5s ease;
+        }
+        
+        .pricing-card.monthly-active {
+            border-color: rgba(239, 68, 68, 0.5);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+        
+        .pricing-card.popular.monthly-active {
+            border-color: rgba(239, 68, 68, 0.8);
+        }
+        
+        .monthly-warning {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+        
+        .monthly-warning.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <header class="py-4 border-b border-gray-100 sticky top-0 bg-white z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <a href="/" class="text-emerald-500 text-xl font-medium">
+            <a href="index.html" class="text-emerald-500 text-xl font-medium">
                 sheet2site
             </a>
             <nav class="hidden md:flex items-center space-x-6">
-                <a href="pricing.html" class="text-gray-600 hover:text-gray-900 text-sm font-medium nav-link">
+                <a href="index.html#showcase" class="text-gray-600 hover:text-gray-900 text-sm font-medium nav-link">
                     Showcase
                 </a>
-                <a href="#" class="text-gray-600 hover:text-gray-900 text-sm font-medium nav-link">
+                <a href="index.html#templates" class="text-gray-600 hover:text-gray-900 text-sm font-medium nav-link">
                     Templates
                 </a>
-                <a href="#" class="text-gray-600 hover:text-gray-900 text-sm font-medium nav-link">
+                <a href="index.html#docs" class="text-gray-600 hover:text-gray-900 text-sm font-medium nav-link">
                     Docs
                 </a>
-                <a href="#" class="text-gray-600 hover:text-gray-900 text-sm font-medium relative nav-link">
+                <a href="index.html#updates" class="text-gray-600 hover:text-gray-900 text-sm font-medium relative nav-link">
                     Updates
                     <span class="absolute -top-1 -right-4 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center pulse">
                         2
                     </span>
                 </a>
-                <a href="pricing.html" class="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                <a href="pricing.html" class="text-emerald-500 hover:text-emerald-600 text-sm font-medium nav-link">
                     Pricing
                 </a>
                 <a href="#" class="btn-primary inline-block text-sm">
@@ -336,181 +326,16 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section py-16 md:py-20">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-12 fade-in">
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-                        Create your own website<br>
-                        using only Google Sheets
-                    </h1>
-                    <p class="text-gray-600 mb-8 text-lg">
-                        Build a fully functional website with pictures, links,<br>
-                        filters and more without writing code.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="btn-primary">
-                            Get Started
-                        </a>
-                        <a href="#" class="btn-secondary">
-                            Discover
-                        </a>
-                    </div>
-                </div>
-                <div class="md:w-1/2 fade-in">
-                    <div class="relative">
-                        <div class="bg-white rounded-lg shadow-lg p-4 relative z-10 hover:shadow-xl transition-shadow duration-300">
-                            <div class="flex items-start">
-                                <div class="w-1/3 pr-2">
-                                    <div class="bg-emerald-500 rounded-lg p-4 flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="3" y1="9" x2="21" y2="9"></line>
-                                            <line x1="3" y1="15" x2="21" y2="15"></line>
-                                            <line x1="9" y1="3" x2="9" y2="21"></line>
-                                            <line x1="15" y1="3" x2="15" y2="21"></line>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="w-2/3">
-                                    <div class="flex flex-col space-y-2">
-                                        <div class="h-6 bg-blue-200 rounded w-full"></div>
-                                        <div class="flex space-x-2">
-                                            <div class="h-16 bg-blue-300 rounded w-1/3"></div>
-                                            <div class="h-16 bg-blue-300 rounded w-1/3"></div>
-                                            <div class="h-16 bg-blue-300 rounded w-1/3"></div>
-                                        </div>
-                                        <div class="h-6 bg-blue-200 rounded w-3/4"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="bg-black bg-opacity-50 rounded-full p-3 hover:bg-opacity-70 transition-all duration-300 cursor-pointer transform hover:scale-110">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Partners Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-12 fade-in">
-                Loved by more than<br>
-                +40,000 users worldwide
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-6 gap-8 items-center">
-                <img src="https://via.placeholder.com/120x40?text=Andreessen" alt="Andreessen" class="partner-logo mx-auto h-8 stagger-item">
-                <img src="https://via.placeholder.com/120x40?text=YCombinator" alt="YCombinator" class="partner-logo mx-auto h-8 stagger-item">
-                <img src="https://via.placeholder.com/120x40?text=Hustle" alt="Hustle" class="partner-logo mx-auto h-8 stagger-item">
-                <img src="https://via.placeholder.com/120x40?text=ProductHunt" alt="ProductHunt" class="partner-logo mx-auto h-8 stagger-item">
-                <img src="https://via.placeholder.com/120x40?text=TechCrunch" alt="TechCrunch" class="partner-logo mx-auto h-8 stagger-item">
-                <img src="https://via.placeholder.com/120x40?text=FastCompany" alt="FastCompany" class="partner-logo mx-auto h-8 stagger-item">
-            </div>
-        </div>
-    </section>
-
-    <!-- How it works Section -->
-    <section class="py-16 bg-gray-50 parallax">
-        <div class="parallax-bg" style="background-image: url('https://via.placeholder.com/1920x1080?text=Background');"></div>
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 fade-in">
-                How does it work?
-            </h2>
-            <p class="text-gray-600 mb-12 fade-in">
-                Watch the explainer video and find out the magic.
-            </p>
-            <div class="max-w-3xl mx-auto fade-in">
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:scale-[1.02]">
-                    <img src="https://via.placeholder.com/800x450?text=Sheet2Site+Demo+Video" alt="How it works" class="w-full">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Existing Website Section -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4 fade-in">
-                Got an existing Website?
-            </h2>
-            <p class="text-gray-600 mb-12 max-w-2xl mx-auto fade-in">
-                No Problem, Simply Embed Your Google Sheet into Your Website.
-                <br>You can do it in 5 steps and embed it to Your Existing Website.
-            </p>
-            <div class="max-w-4xl mx-auto">
-                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                    <div class="md:w-1/2 slide-in-left">
-                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-emerald-500 transition-colors duration-300">
-                            <div class="bg-white shadow rounded-lg p-2 hover:shadow-md transition-shadow duration-300">
-                                <div class="flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                        <line x1="3" y1="9" x2="21" y2="9"></line>
-                                        <line x1="3" y1="15" x2="21" y2="15"></line>
-                                        <line x1="9" y1="3" x2="9" y2="21"></line>
-                                        <line x1="15" y1="3" x2="15" y2="21"></line>
-                                    </svg>
-                                </div>
-                                <div class="text-center mt-2">
-                                    <span class="text-sm font-medium">Google Sheets</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="md:w-16 flex justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transform rotate-90 md:rotate-0 animate-pulse">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                    <div class="md:w-1/2 slide-in-right">
-                        <div class="border-2 border-gray-200 rounded-lg p-4 hover:border-emerald-500 transition-colors duration-300">
-                            <div class="bg-gray-100 rounded-lg p-2">
-                                <div class="grid grid-cols-4 gap-2">
-                                    <div class="h-4 bg-gray-300 rounded"></div>
-                                    <div class="h-4 bg-gray-300 rounded"></div>
-                                    <div class="h-4 bg-gray-300 rounded"></div>
-                                    <div class="h-4 bg-gray-300 rounded"></div>
-                                </div>
-                                <div class="mt-2 space-y-2">
-                                    <div class="h-4 bg-gray-300 rounded w-full"></div>
-                                    <div class="h-4 bg-gray-300 rounded w-full"></div>
-                                    <div class="h-4 bg-gray-300 rounded w-3/4"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-12 flex justify-center space-x-4 fade-in">
-                <a href="#" class="btn-secondary">
-                    Take Demo
-                </a>
-                <a href="#" class="btn-primary">
-                    Get Started
-                </a>
-            </div>
-        </div>
-    </section>
-
     <!-- Pricing Section -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 fade-in">
+            <h1 class="text-4xl font-bold text-gray-900 mb-6 fade-in">
                 Get Started
-            </h2>
+            </h1>
             
-            <div class="pricing-toggle fade-in">
-                <button class="text-gray-500 hover:bg-white/30 transition-colors">Monthly</button>
-                <button class="active">Yearly</button>
+            <div class="pricing-toggle fade-in yearly">
+                <button class="monthly-btn" data-plan="monthly">Monthly</button>
+                <button class="yearly-btn active" data-plan="yearly">Yearly</button>
             </div>
             
             <div class="grid md:grid-cols-3 gap-0 max-w-5xl mx-auto">
@@ -520,10 +345,19 @@
                         <div class="text-gray-500 uppercase text-xs font-semibold mb-4">Basic</div>
                         <div class="flex items-baseline justify-center mb-4">
                             <span class="text-gray-400 text-lg">$</span>
-                            <span class="text-3xl font-bold text-gray-900">29</span>
-                            <span class="text-gray-400 text-lg">/mo</span>
+                            <span class="text-3xl font-bold text-gray-900 price-amount">29</span>
+                            <span class="text-gray-400 text-lg price-period">/mo</span>
                         </div>
-                        <p class="text-gray-500 text-xs mb-6">Billed $348 annually (ex. VAT)</p>
+                        <p class="text-gray-500 text-xs mb-6 billing-info">Billed $348 annually (ex. VAT)</p>
+                        
+                        <div class="monthly-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Save 40% with yearly billing
+                        </div>
                         
                         <div class="space-y-3 text-sm text-left mb-8">
                             <div class="flex items-center">
@@ -538,20 +372,35 @@
                                 </svg>
                                 <span>«Made with Sheet2Site» banner</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Unlimited websites using the Sheet2Site domain</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Unlimited websites using the Sheet2Site domain</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Unlimited cards per page</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Unlimited cards per page</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Filters and search</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Filters and search</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Detail pages and subpages</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Detail pages and subpages</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">SSL (HTTPS)</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>SSL (HTTPS)</span>
                             </div>
                         </div>
                         
@@ -569,10 +418,19 @@
                         <div class="text-emerald-500 uppercase text-xs font-semibold mb-4">Premium</div>
                         <div class="flex items-baseline justify-center mb-4">
                             <span class="text-gray-400 text-lg">$</span>
-                            <span class="text-3xl font-bold text-emerald-500">49</span>
-                            <span class="text-gray-400 text-lg">/mo</span>
+                            <span class="text-3xl font-bold text-emerald-500 price-amount">49</span>
+                            <span class="text-gray-400 text-lg price-period">/mo</span>
                         </div>
-                        <p class="text-gray-500 text-xs mb-6">Billed $588 annually (ex. VAT)</p>
+                        <p class="text-gray-500 text-xs mb-6 billing-info">Billed $588 annually (ex. VAT)</p>
+                        
+                        <div class="monthly-warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Save 50% with yearly billing
+                        </div>
                         
                         <div class="space-y-3 text-sm text-left mb-8">
                             <div class="flex items-center">
@@ -599,20 +457,35 @@
                                 </svg>
                                 <span>Payments via Stripe</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Unlimited websites using the Sheet2Site domain</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Unlimited websites using the Sheet2Site domain</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Unlimited cards per page</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Unlimited cards per page</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Filters and search</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Filters and search</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">Detail pages and subpages</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Detail pages and subpages</span>
                             </div>
-                            <div class="flex items-center text-gray-400">
-                                <span class="ml-6">SSL (HTTPS)</span>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500 mr-2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>SSL (HTTPS)</span>
                             </div>
                             <div class="flex items-center text-emerald-500">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
@@ -653,10 +526,19 @@
                         <div class="text-emerald-100 uppercase text-xs font-semibold mb-4">Enterprise</div>
                         <div class="flex items-baseline justify-center mb-4">
                             <span class="text-emerald-200 text-lg">$</span>
-                            <span class="text-3xl font-bold">349</span>
-                            <span class="text-emerald-200 text-lg">/mo</span>
+                            <span class="text-3xl font-bold price-amount">349</span>
+                            <span class="text-emerald-200 text-lg price-period">/mo</span>
                         </div>
-                        <p class="text-emerald-200 text-xs mb-6">Billed $2,950 annually (ex. VAT)</p>
+                        <p class="text-emerald-200 text-xs mb-6 billing-info">Billed $2,950 annually (ex. VAT)</p>
+                        
+                        <div class="monthly-warning text-emerald-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Save 40% with yearly billing
+                        </div>
                         
                         <div class="space-y-3 text-sm text-left mb-8">
                             <div class="flex items-center">
@@ -855,21 +737,45 @@
         </div>
     </footer>
 
-    <!-- JavaScript for animations -->
+    <!-- JavaScript for animations and pricing toggle -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Smooth scrolling for all links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
+            // Preisdaten
+            const pricingData = {
+                basic: {
+                    monthly: {
+                        price: 49,
+                        billing: 'Billed monthly (ex. VAT)'
+                    },
+                    yearly: {
+                        price: 29,
+                        billing: 'Billed $348 annually (ex. VAT)'
+                    }
+                },
+                premium: {
+                    monthly: {
+                        price: 99,
+                        billing: 'Billed monthly (ex. VAT)'
+                    },
+                    yearly: {
+                        price: 49,
+                        billing: 'Billed $588 annually (ex. VAT)'
+                    }
+                },
+                enterprise: {
+                    monthly: {
+                        price: 599,
+                        billing: 'Billed monthly (ex. VAT)'
+                    },
+                    yearly: {
+                        price: 349,
+                        billing: 'Billed $2,950 annually (ex. VAT)'
+                    }
+                }
+            };
             
             // Fade in elements on scroll
-            const fadeElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .scale-in');
+            const fadeElements = document.querySelectorAll('.fade-in, .scale-in');
             const staggerItems = document.querySelectorAll('.stagger-item');
             
             const fadeInOnScroll = function() {
@@ -892,32 +798,90 @@
                 });
             };
             
-            // Parallax effect
-            const parallaxBgs = document.querySelectorAll('.parallax-bg');
-            const parallaxScroll = function() {
-                parallaxBgs.forEach(bg => {
-                    const scrollPosition = window.pageYOffset;
-                    bg.style.transform = `translateY(${scrollPosition * 0.4}px)`;
-                });
-            };
-            
             // Execute on page load
             fadeInOnScroll();
-            parallaxScroll();
             
             // Execute on scroll
             window.addEventListener('scroll', function() {
                 fadeInOnScroll();
-                parallaxScroll();
             });
             
             // Toggle pricing buttons
-            const pricingButtons = document.querySelectorAll('.pricing-toggle button');
-            pricingButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    pricingButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
+            const monthlyBtn = document.querySelector('.monthly-btn');
+            const yearlyBtn = document.querySelector('.yearly-btn');
+            const pricingCards = document.querySelectorAll('.pricing-card');
+            const priceElements = document.querySelectorAll('.price-amount');
+            const billingElements = document.querySelectorAll('.billing-info');
+            const monthlyWarnings = document.querySelectorAll('.monthly-warning');
+            
+            let currentPlan = 'yearly';
+            
+            function updatePrices(plan) {
+                // Sanfte Übergänge für die Preisänderungen
+                priceElements.forEach((el, index) => {
+                    // Bestimme den neuen Preis basierend auf dem Plan und der Karte
+                    let newPrice;
+                    if (index === 0) {
+                        newPrice = pricingData.basic[plan].price;
+                        billingElements[0].textContent = pricingData.basic[plan].billing;
+                    } else if (index === 1) {
+                        newPrice = pricingData.premium[plan].price;
+                        billingElements[1].textContent = pricingData.premium[plan].billing;
+                    } else {
+                        newPrice = pricingData.enterprise[plan].price;
+                        billingElements[2].textContent = pricingData.enterprise[plan].billing;
+                    }
+                    
+                    // Sanfte Animation für die Preisänderung
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.textContent = newPrice;
+                        el.style.opacity = '1';
+                    }, 300);
                 });
+                
+                // Zeige/verstecke monatliche Warnungen mit Animation
+                if (plan === 'monthly') {
+                    monthlyWarnings.forEach(el => {
+                        el.classList.add('show');
+                    });
+                    pricingCards.forEach(card => {
+                        card.classList.add('monthly-active');
+                    });
+                } else {
+                    monthlyWarnings.forEach(el => {
+                        el.classList.remove('show');
+                    });
+                    pricingCards.forEach(card => {
+                        card.classList.remove('monthly-active');
+                    });
+                }
+            }
+            
+            monthlyBtn.addEventListener('click', function() {
+                if (currentPlan === 'monthly') return;
+    
+                yearlyBtn.classList.remove('active');
+                monthlyBtn.classList.add('active');
+    
+                document.querySelector('.pricing-toggle').classList.remove('yearly');
+                document.querySelector('.pricing-toggle').classList.add('monthly');
+    
+                updatePrices('monthly');
+                currentPlan = 'monthly';
+            });
+
+            yearlyBtn.addEventListener('click', function() {
+                if (currentPlan === 'yearly') return;
+    
+                monthlyBtn.classList.remove('active');
+                yearlyBtn.classList.add('active');
+    
+                document.querySelector('.pricing-toggle').classList.remove('monthly');
+                document.querySelector('.pricing-toggle').classList.add('yearly');
+    
+                updatePrices('yearly');
+                currentPlan = 'yearly';
             });
         });
     </script>
